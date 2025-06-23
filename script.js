@@ -1,7 +1,8 @@
+const API_BASE = 'https://notes-backend.onrender.com/api/notes'; // replace with your real backend URL
 let currentNoteId = null;
 
 async function fetchNotes() {
-    const res = await fetch('/api/notes');
+    const res = await fetch(API_BASE);
     const notes = await res.json();
     const notesList = document.getElementById("notesList");
     notesList.innerHTML = "";
@@ -23,7 +24,7 @@ async function saveNote() {
     const title = document.getElementById("noteTitle").value;
     const content = document.getElementById("noteContent").value;
     const payload = { title, content };
-    const url = currentNoteId ? '/api/notes/' + currentNoteId : '/api/notes';
+    const url = currentNoteId ? `${API_BASE}/${currentNoteId}` : API_BASE;
     const method = currentNoteId ? 'PUT' : 'POST';
 
     await fetch(url, {
@@ -31,6 +32,7 @@ async function saveNote() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     });
+
     currentNoteId = null;
     document.getElementById("noteTitle").value = "";
     document.getElementById("noteContent").value = "";
